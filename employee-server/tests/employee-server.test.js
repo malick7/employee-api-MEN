@@ -50,14 +50,14 @@ describe('POST /employees', () => {
           .send({})
           .expect(400)
           .end((err, res) => {
-            if (err) {
-              return done(err);
-            }
-    
-            Employee.find().then((employee) => {
-              expect(employee.length).toBe(0);
-              done();
-            }).catch((e) => done(e));
+                if (err) return done(err);
+                        
+                Employee.find()
+                    .then((employees) => {
+                        expect(employees.length).toBe(0);
+                        done();
+                    })
+                    .catch((e) => done(e));
           });
       });
 });
