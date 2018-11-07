@@ -26,6 +26,16 @@ app.post('/employees', (req, res) => {
     res.status(400).send(e);
   });
 });
+
+app.get('/employees', (req, res) => {
+  Employee.find()
+    .then((employees) => {
+      res.send({employees})
+    }, (e) => {
+      res.send(400).send(e);
+    }
+  );
+})
   
 if(!module.parent){ 
   app.listen(3000, () => {
