@@ -10,3 +10,5 @@ to run testcases:
 npm run test-watch
 
 date-format caused - Bad request!
+
+to run server: node .\employee-server\employee-server.js

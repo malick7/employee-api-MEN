@@ -1,5 +1,6 @@
 const expect = require('expect');
 const request = require('supertest');
+const {ObjectID} = require('mongodb');
 
 
 const {app} = require('../employee-server');
@@ -7,6 +8,7 @@ const {Employee} = require('../models/employee');
 
 const employees =[
     {
+        _id: new ObjectID(),
         "department" : 0,
         "hireDate" : "11/8/2018",
         "isPermanent" : true,
@@ -17,6 +19,7 @@ const employees =[
         "gender" : "2"
     },
     {
+        _id: new ObjectID(),
         "department" : 1,
         "hireDate" : "11/8/2018",
         "isPermanent" : true,
@@ -27,6 +30,7 @@ const employees =[
         "gender" : "1"
     },
     {
+        _id: new ObjectID(),
         "department" : 2,
         "hireDate" : "11/8/2018",
         "isPermanent" : true,
@@ -114,3 +118,32 @@ describe('GET /employees', () => {
             .end(done);
     });
 });
+
+describe('GET /employees/:id', () => {
+    it('should return an employee', (done) => {
+        request(app)
+            .get(`/employees/${employees[0]._id.toHexString()}`)
+            .expect(200)
+            .expect( (res) => {
+                expect(res.body.employee.fullname).toBe(employees[0].fullname);
+            })
+            .end(done);
+    });
+
+    it('should return a 404', (done) => {
+        var hexId = new ObjectID().toHexString();
+        request(app)
+            .get(`/employees/${hexId}`)
+            .expect(404)
+            .end(done);
+    });
+
+    it('should return invalid object id', (done) => {
+        request(app)
+            .get(`/employees/12345`)
+            .expect(404)
+            .end(done);
+    });
+});
+
+// describe();

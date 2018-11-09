@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 
 var {mongoose} = require('./mongodb/mongoose');
 var {Employee} = require('./models/employee');
+const {ObjectID} = require('mongodb');
 
 var app = express();
 
@@ -36,7 +37,25 @@ app.get('/employees', (req, res) => {
     }
   );
 })
-  
+
+//GET employees/1234
+app.get('/employees/:id', (req, res) => {
+  var empId = req.params.id;
+  console.log(empId);
+  if(!ObjectID.isValid(empId)) {
+    return res.status(404).send('Invalid ObjectId');
+  }
+
+  Employee.findById(empId)
+    .then((employee) => {
+      if(!employee) return res.status(404).send('Not found');
+      return res.status(200).send({employee});
+    })
+    .catch((err) => {
+      return res.status(404).send(err);
+    })
+});
+
 if(!module.parent){ 
   app.listen(3000, () => {
     console.log('Started on port 3000');
