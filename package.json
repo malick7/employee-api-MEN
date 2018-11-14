@@ -4,8 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "SET NODE_ENV=development & nodemon employee-server/employee-server.js",
     "test": "mocha employee-server/**/*.test.js",
-    "test-watch": "nodemon --exec npm test"
+    "test-watch": "nodemon --exec npm test",
+    "test-coverage": "SET NODE_ENV=development istanbul cover _mocha —- -R spec"
+  },
+  "engines": {
+    "node": "9.4.0"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +22,7 @@
   },
   "devDependencies": {
     "expect": "^1.20.2",
+    "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
     "nodemon": "^1.10.2",
     "supertest": "^2.0.0"
